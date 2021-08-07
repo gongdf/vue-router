@@ -80,7 +80,7 @@ export class History {
 
   transitionTo (
     location: RawLocation,
-    onComplete?: Function,
+    onComplete?: Function, // onComplete回调里面去改变history的state
     onAbort?: Function
   ) {
     let route

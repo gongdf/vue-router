@@ -22,6 +22,7 @@ export function createMatcher (
 ): Matcher {
   const { pathList, pathMap, nameMap } = createRouteMap(routes)
 
+  // 动态添加路由
   function addRoutes (routes) {
     createRouteMap(routes, pathList, pathMap, nameMap)
   }

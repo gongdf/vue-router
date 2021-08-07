@@ -48,9 +48,9 @@ export function createRouteMap (
   }
 
   return {
-    pathList,
-    pathMap,
-    nameMap
+    pathList, // 所有路径的集合 ['','/home', '/home/bar']
+    pathMap, // path与route的对应 [{'/home': {...}, '/home/bar': {...}}]
+    nameMap // name与route的对应 [{home: {...}, bar: {...}}]
   }
 }
 

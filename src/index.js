@@ -47,17 +47,19 @@ export default class VueRouter {
     this.afterHooks = []
     this.matcher = createMatcher(options.routes || [], this)
 
-    let mode = options.mode || 'hash'
+    // 确定路由模式
+    let mode = options.mode || 'hash' // 默认hash模式
     this.fallback =
       mode === 'history' && !supportsPushState && options.fallback !== false
-    if (this.fallback) {
-      mode = 'hash'
+    if (this.fallback) { // 不支持pushState时转为hash
+      mode = 'hash' 
     }
     if (!inBrowser) {
       mode = 'abstract'
     }
     this.mode = mode
 
+    // 根据mode创建相应的切换模式实例
     switch (mode) {
       case 'history':
         this.history = new HTML5History(this, options.base)
@@ -112,11 +114,12 @@ export default class VueRouter {
       return
     }
 
-    this.app = app
+    this.app = app // 当前路由实例上app属性指向vm，准确的说是_routerRoot
 
     const history = this.history
-
+    // 跳转 - 据实际URL来跳转到对应的路由去
     if (history instanceof HTML5History || history instanceof HashHistory) {
+      // 初始化滚动位置
       const handleInitialScroll = routeOrError => {
         const from = history.current
         const expectScroll = this.options.scrollBehavior
@@ -130,16 +133,19 @@ export default class VueRouter {
         history.setupListeners()
         handleInitialScroll(routeOrError)
       }
+      // 跳转
       history.transitionTo(
         history.getCurrentLocation(),
         setupListeners,
         setupListeners
       )
     }
-
+    // 监听变化
+    // listen方法将回调添加到history的cb属性上
+    // history监听到变化后调用updateRoute，updateRoute里面调用history.cb，就是我们这里传的函数
     history.listen(route => {
       this.apps.forEach(app => {
-        app._route = route
+        app._route = route // _route在install时转换成了响应式数据，修改它，会通知引用了它的router-link,router-view组件重新渲染
       })
     })
   }

@@ -42,6 +42,7 @@ export default {
       default: 'click'
     }
   },
+  // 在非UI组件的库里，这些组件的渲染都是用render函数实现的，一般不会去使用单文件组件的方式，那样还要引入webpack插件，浪费成本了
   render (h: Function) {
     const router = this.$router
     const current = this.$route

@@ -10,8 +10,8 @@ import { pushState, replaceState, supportsPushState } from '../util/push-state'
 export class HTML5History extends History {
   _startLocation: string
 
+  super(router, base)
   constructor (router: Router, base: ?string) {
-    super(router, base)
 
     this._startLocation = getLocation(this.base)
   }
@@ -45,6 +45,10 @@ export class HTML5History extends History {
         }
       })
     }
+    // 需要注意的是调用history.pushState()或history.replaceState()不会触发popstate事件。
+    // 只有在做出浏览器动作时，才会触发该事件
+    // 如用户点击浏览器的回退按钮（或者在Javascript代码中调用history.back()或者history.forward()方法）
+    // 浏览器前进后退等引起url变化时，渲染对应的组件
     window.addEventListener('popstate', handleRoutingEvent)
     this.listeners.push(() => {
       window.removeEventListener('popstate', handleRoutingEvent)
@@ -72,7 +76,7 @@ export class HTML5History extends History {
       onComplete && onComplete(route)
     }, onAbort)
   }
-
+  // 修改url的显示
   ensureURL (push?: boolean) {
     if (getLocation(this.base) !== this.current.fullPath) {
       const current = cleanPath(this.base + this.current.fullPath)

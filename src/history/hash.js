@@ -46,6 +46,7 @@ export class HashHistory extends History {
         }
       })
     }
+    // hash模式下也是优先使用popstate - 它能监听hash是变化
     const eventType = supportsPushState ? 'popstate' : 'hashchange'
     window.addEventListener(
       eventType,
